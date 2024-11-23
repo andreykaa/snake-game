@@ -64,6 +64,22 @@ function changeDirection(event) {
     }
 }
 
+document.getElementById('up').addEventListener('click', () => {
+    if (direction.y === 0) direction = { x: 0, y: -1 };
+});
+
+document.getElementById('down').addEventListener('click', () => {
+    if (direction.y === 0) direction = { x: 0, y: 1 };
+});
+
+document.getElementById('left').addEventListener('click', () => {
+    if (direction.x === 0) direction = { x: -1, y: 0 };
+});
+
+document.getElementById('right').addEventListener('click', () => {
+    if (direction.x === 0) direction = { x: 1, y: 0 };
+});
+
 document.addEventListener('keydown', changeDirection);
 
 setInterval(draw, 300); // Обновляем игру каждые 100 мс
