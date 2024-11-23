@@ -4,8 +4,8 @@ canvas.height = window.innerHeight * 0.6; // Устанавливаем высо
 const ctx = canvas.getContext('2d');
 
 // Звуковые эффекты
-const moveSound = new Audio('move.mp3'); // Звук движения
-const eatSound = new Audio('eat.mp3'); // Звук поедания еды
+const moveSound = new Audio('sounds/move.mp3'); // Звук движения
+const eatSound = new Audio('sounds/eat.mp3'); // Звук поедания еды
 
 let snake = [{ x: 10, y: 10 }];
 let direction = { x: 0, y: 0 };
