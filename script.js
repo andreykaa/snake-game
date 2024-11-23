@@ -7,49 +7,52 @@ let snake = [{ x: 10, y: 10 }];
 let direction = { x: 0, y: 0 };
 let food = { x: Math.floor(Math.random() * (canvas.width / 20)), y: Math.floor(Math.random() * (canvas.height / 20)) };
 let score = 0;
+let isPaused = false;
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (!isPaused) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Рисуем змейку
-    ctx.fillStyle = 'green';
-    snake.forEach(part => {
-        ctx.fillRect(part.x * 20, part.y * 20, 18, 18);
-    });
+        // Рисуем змейку
+        ctx.fillStyle = 'green';
+        snake.forEach(part => {
+            ctx.fillRect(part.x * 20, part.y * 20, 18, 18);
+        });
 
-    // Рисуем еду
-    ctx.fillStyle = 'red';
-    ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
+        // Рисуем еду
+        ctx.fillStyle = 'red';
+        ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
 
-    // Двигаем змейку
-    let head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+        // Двигаем змейку
+        let head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
 
-    // Проверка на столкновение с едой
-    if (head.x === food.x && head.y === food.y) {
-        score++;
-        food = {
-            x: Math.floor(Math.random() * (canvas.width / 20)),
-            y: Math.floor(Math.random() * (canvas.height / 20))
-        };
+        // Проверка на столкновение с едой
+        if (head.x === food.x && head.y === food.y) {
+            score++;
+            food = {
+                x: Math.floor(Math.random() * (canvas.width / 20)),
+                y: Math.floor(Math.random() * (canvas.height / 20))
+            };
 
-        // Не убираем последний элемент змейки при поедании еды
-        snake.unshift(head);
+            // Не убираем последний элемент змейки при поедании еды
+            snake.unshift(head);
 
-        // Увеличиваем длину змейки
-        return;
+            // Увеличиваем длину змейки
+            return;
 
-    } else {
-        snake.pop(); // Убираем последний элемент змейки
+        } else {
+            snake.pop(); // Убираем последний элемент змейки
+        }
+
+        // Проверка на столкновение со стенами или самой собой
+        if (head.x < 0 || head.x >= canvas.width / 20 || head.y < 0 || head.y >= canvas.height / 20 || collision(head)) {
+            alert('Игра окончена! Ваш счет: ' + score);
+            document.location.reload();
+            return;
+        }
+
+        snake.unshift(head); // Добавляем новую голову змейки
     }
-
-    // Проверка на столкновение со стенами или самой собой
-    if (head.x < 0 || head.x >= canvas.width / 20 || head.y < 0 || head.y >= canvas.height / 20 || collision(head)) {
-        alert('Игра окончена! Ваш счет: ' + score);
-        document.location.reload();
-        return;
-    }
-
-    snake.unshift(head); // Добавляем новую голову змейки
 }
 
 function collision(head) {
@@ -62,16 +65,25 @@ document.getElementById('up').addEventListener('click', () => {
 });
 
 document.getElementById('down').addEventListener('click', () => {
-    if (direction.y === 0) direction = { x: 0, y: 1 };
+    if (direction.y === 0) direction = { x: 0, y: +1 };
 });
 
 document.getElementById('left').addEventListener('click', () => {
-    if (direction.x === 0) direction = { x: -1, y: 0 };
+    if (direction.x === 0) direction = { x:-1 ,y :0}; // Исправлено направление влево
 });
 
 document.getElementById('right').addEventListener('click', () => {
-    if (direction.x === 0) direction = { x: 1, y: 0 };
+    if (direction.x === -1) return; // Запретить движение в противоположном направлении.
+    if (direction.x === +1) return;
+    direction ={x :+1 ,y :0}; // Исправлено направление вправо
 });
 
-// Запуск игры
-setInterval(draw, 100); // Обновляем игру каждые 100 мс
+// Обработка события нажатия на кнопку "Пауза"
+document.getElementById('pause').addEventListener('click', () => {
+    isPaused = !isPaused; // Переключаем состояние паузы
+    const pauseButton = document.getElementById('pause');
+    pauseButton.textContent = isPaused ? '▶️' : '⏸️'; // Меняем текст кнопки между паузой и воспроизведением
+});
+
+// Запуск игры с интервалом обновления в300 мс для уменьшения скорости
+setInterval(draw,300); // Обновляем игру каждые300 мс
