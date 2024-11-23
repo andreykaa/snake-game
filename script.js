@@ -86,4 +86,4 @@ document.getElementById('pause').addEventListener('click', () => {
 });
 
 // Запуск игры с интервалом обновления в300 мс для уменьшения скорости
-setInterval(draw,300); // Обновляем игру каждые300 мс
+setInterval(draw,310); // Обновляем игру каждые300 мс
