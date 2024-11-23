@@ -6,7 +6,7 @@ body {
 }
 
 canvas {
-    border: 10px solid #059;
+    border: 1px solid #000;
 }
 
 #controls {
