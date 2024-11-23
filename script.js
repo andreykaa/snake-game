@@ -92,3 +92,6 @@ document.getElementById('pause').addEventListener('click', () => {
 
 // Запуск игры с интервалом обновления в300 мс для уменьшения скорости
 setInterval(draw,300); // Обновляем игру каждые300 мс
+
+const testSound = new Audio('move.mp3'); // Или 'sounds/move.mp3'
+testSound.play();
